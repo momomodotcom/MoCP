@@ -1,0 +1,133 @@
+<h1>Fully fuctional and dynamic template engine alá JSP/GSP but on steroids. Have been tested extensively. Simple to set up. Fully dynamic.
+    Works as a layout manager, and can manage events, updating templates when model does.
+    Write taglibraries for your own custom uses.
+
+    Definetely the best template engine out there, and I am not saying that because I wrote it, but because it is true.
+
+    Fast, asynchronys or synchronues. Templates, templates with body ( layouts ), templates with several bodies.
+
+    Shows where error occured if there are errors in the view
+
+    Scoped.
+
+    Comments. Nested comments.
+
+    Inline code.
+
+    Give it a try! You won't regret it!
+
+    Be careful in asynchronues mode, threads will go ahead and perform tasks simualtenuesly,
+    so if you change a value somewhere in a subtemplate,
+    it might not be ready further down in your parent template when that is invoked.
+    You shouldn't however relying on changing the model used in a parent template in a subtemplate.
+    Bad design!
+
+    Hook into the current rendering if you need to perform an ajax requrest and to be part of your response.
+</h1>
+
+
+<style xmlns="http://www.w3.org/1999/html">
+    * {
+        margin:0 0 10px 0;
+    }
+    h1 { color:#444; text-align: center; margin-bottom:100px; margin-top: 100px;}
+    h2 { color:#777; margin-left:20px; font-size:16px;}
+    h3 { color: #888; margin-left:40px; font-size:14px;}
+    h4, li { color:#999; margin-left: 60px; font-size:13px;}
+    h5 { color:black; margin-left:100px; }
+    ul {
+        margin-left:40px;
+    }
+</style>
+
+
+
+<h1>test0.html START</h1>
+
+<h2>Output model property using <m:esc>${myModelProperty}</m:esc></h2>
+<h4>__${myModelProperty}__</h4>
+
+
+<h2>Set model property using <m:esc><% M.model.myModelProperty = "Altered my model property!" %></m:esc>
+    Can be used across in all sub templates!
+</h2>
+<% M.model.myModelProperty = "Altered my model property in test0.html!" %>
+
+
+
+<h2>Output model property using <m:esc>${myModelProperty}</m:esc></h2>
+<h4>__${myModelProperty}__</h4>
+
+
+
+<h2>Set global property using <m:esc><% M.request.requestProperty = "My global property" %></m:esc>
+    Can be used across all templates, including parent templates, even if declared in a subtemplate before being used.
+</h2>
+<% M.request.requestProperty = "My global property" %>
+
+
+
+<h2>Output global property using <m:esc>${M.request.requestProperty}</m:esc></h2>
+<h4>__${M.request.requestProperty}__</h4>
+
+
+
+<h2>Output global property using <m:esc><%= M.request.requestProperty %></m:esc></h2>
+<h4>__<%= M.request.requestProperty %>__</h4>
+
+
+
+<h2>Set local property ( Relative only to this file, cannot be used in bodies. Use model or global for that, or pass into the body! )</h2>
+<% M.local.myLocalProperty = "My local property" %>
+
+
+
+<h2>Output local property using <m:esc>${M.local.myLocalProperty}</m:esc></h2>
+<h4>__${M.local.myLocalProperty}__</h4>
+
+
+<h2>Rendering test1.html</h2>
+<m:render file="test/test1.html" name="myFirstBody" bodies="2" model="${{renderModelProperty1: 'renderModelPropertyValue1'}}">
+    <h3>myFirstBody</h3>
+
+    <h4>__${myModelProperty}__</h4>
+    <h4>__${variable}__</h4>
+    <h4>__${M.request.requestProperty}__</h4>
+    <h4>__${modelPassedToBody1}
+        <m:if test="${caller == 'test2.html'}">
+            ( Not expecting anything here since called from test2.html )
+       </m:if>__</h4>
+    <h4>__${modelPassedToBody2} ( Expecting nothing here since this one has not been defined at all )__</h4>
+    <h4>__${renderModelProperty1}__</h4>
+    <h4>__${renderModelProperty2}
+        <m:if test="${caller != 'test2.html'}">
+            ( Not expecting renderModelProperty2 here since this property will be available in test2.html )
+        </m:if>
+        __
+    </h4>
+</m:render>
+<m:render name="mySecondBody">
+    <h3>mySecondBody</h3>
+
+    <h4>__${myModelProperty}__</h4>
+    <h4>__${variable}__</h4>
+    <h4>__${M.request.requestProperty}__</h4>
+    <h4>__${modelPassedToBody1}__ ( Expectinxxxxxxxg nothing here since this one was only passed to myFirstBody invokation )</h4>
+    <h4>__${modelPassedToBody2}__ ( Expecting nothing here since this one has not been defined at all )</h4>
+</m:render>
+
+
+
+<h2>Output a couple of variables defined elsewere</h2>
+<h4>__${myModelProperty}__</h4>
+<h4>__${renderModelProperty1}__ (Expecting nothing since this was set in sub templates )</h4>
+<h4>__${renderModelProperty2}__ (Expecting nothing since this was set in sub templates )</h4>
+<h4>__${modelPassedToBody1}__ (Expecting nothing here since this one was only passed to myFirstBody invokation )</h4>
+
+<h2>Out if</h2>
+<h4>__<m:o t="${i%2==0}" i="even" e="odd"/>__</h4>
+
+<h2>Rendering test3.html</h2>
+<m:render file="test/test3.html" />
+
+<h1>test0.html END</h1>

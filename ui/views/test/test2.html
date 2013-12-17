@@ -1,0 +1,313 @@
+<h1>test2.html START</h1>
+
+
+<h2>Body from test0.html in the beginning</h2>
+<m:body name="myFirstBody" model="${{caller:'test2.html'}}"/>
+
+
+
+<h2>Properties</h2>
+<h4>__${myModelProperty}__</h4>
+<h4>__${variable}__</h4>
+<h4>__${M.request.myGlobalProperty}__</h4>
+<h4>__${modelPassedToBody1} ( Expecting nothing here since this one was only passed to myFirstBody invokation )__</h4>
+
+
+
+<h2>Set simple</h2>
+<m:set key="myKey" val="myValue" />
+<h3>Output dollar and &lt;m:get key="myKey" /&gt;</h3>
+<h4>__${myKey}__</h4>
+<h4>__<m:get key="myKey"/>__</h4>
+
+
+
+<h2>Set body</h2>
+<m:set key="myThirdBody">
+    <h2>Output myThirdBody</h2>
+    <h4>__${myModelProperty}__</h4>
+    <h4>__${variable}__</h4>
+    <h4>__${M.request.myGlobalProperty}__</h4>
+    <m:if test="${modelPassedToBody && modelPassedToBody.length > 0 }" >
+        <h4>__${modelPassedToBody} ( If blocked success )__</h4>
+    </m:if>
+    <m:else test="${modelPassedToBody && modelPassedToBody.length}" >
+        <h4>__${modelPassedToBody} ( Else blocked succes, passed on if )__</h4>
+    </m:else>
+</m:set>
+
+<m:get key="myThirdBody" model="${{modelPassedToBody: 'This is a variable passed to the body invokation'}}"/>
+<m:get key="myThirdBody"/>
+
+
+
+
+<h2>Each item in model["array"]</h2>
+<ul>
+    <m:each in="${array}" key="item">
+        <li>
+            ${item}
+        </li>
+    </m:each>
+</ul>
+
+
+
+
+<h2>Each item in on the fly array ["1", '2', "3"]</h2>
+<ul>
+    <m:each in="${["1", '2', "3"]}" key="item">
+        <li>
+            ${item}
+        </li>
+    </m:each>
+</ul>
+
+
+
+
+<h2>Each nested arrays [['1', '2', '3'], array] ( Two each loops )</h2>
+<m:each in="${[['1', '2', '3'], array]}" key="array">
+    <ul>
+        <li>
+            <h4>Array: ${array}</h4>
+            <ul>
+                <m:each in="${array}" key="item">
+                    <li>
+                        ${item}
+                    </li>
+                </m:each>
+            </ul>
+        </li>
+    </ul>
+</m:each>
+
+
+
+
+<h2>Each map in model</h2>
+<ul>
+    <m:each in="${map}">
+        <li>
+            ${it.key} = ${it.val}
+        </li>
+    </m:each>
+</ul>
+
+
+
+<m:set key="eachNestedMap">
+    <h2>Each nested map from model ( Two each loops ) using set ( for later multiple invokations)</h2>
+    <div>
+        <ul>
+            <m:each in="${mapNested}">
+                <li>
+                    <h4>Usign "it" in the nested map as well</h4>
+                    <ul>
+                        <m:each in="${it.val}">
+                            <li>
+                                ${it.key} : ${it.val}
+                            </li>
+                        </m:each>
+                    </ul>
+                </li>
+
+                <li>
+                    <h4>Naming the key values, without using "it" to output</h4>
+                    <ul>
+                        <m:each in="${it.val}" key="key" val="val">
+                            <li>
+                                ${key} : ${val}
+                            </li>
+                        </m:each>
+                    </ul>
+                </li>
+            </m:each>
+        </ul>
+    </div>
+</m:set>
+<m:get key="eachNestedMap"/>
+
+
+
+<h2>If elseif else (Expecting if)</h2>
+<div>
+    <m:if test="${obj == 'value'}">
+        <h4>If</h4>
+    </m:if>
+    <m:elseif test="${variable == 'Variable passed from model'}">
+        ElseIf
+    </m:elseif>
+    <m:else>
+        Else
+    </m:else>
+</div>
+
+
+
+
+<h2>If elseif else (Expecting elseif)</h2>
+<div>
+    <m:if test="${obj != 'value'}">
+        If
+    </m:if>
+    <m:elseif test="${obj == 'value'}">
+        <h4>elseIf</h4>
+    </m:elseif>
+    <m:else>
+        Else
+    </m:else>
+</div>
+
+
+
+
+
+<h2>If elseif else (expecting: else)</h2>
+<div>
+    <m:if test="${obj != 'value'}">
+        If
+    </m:if>
+    <m:elseif test="${obj == 'someting else'}">
+        ElseIf
+    </m:elseif>
+    <m:else>
+        <h4>else</h4>
+    </m:else>
+</div>
+
+
+
+
+<h2>If elseif else (expecting: elseifSecond)</h2>
+<div>
+    <m:if test="${[].length}">
+        If
+    </m:if>
+    <m:elseif test="${[1,2,3].length == 1}">
+        ElseIf
+    </m:elseif>
+    <m:elseif test="${[1,2,3].length == 3}">
+        <h4>elseifSecond</h4>
+    </m:elseif>
+    <m:elseif test="${[1,2,3].length == 3}">
+        <h4>elseifThird</h4>
+    </m:elseif>
+    <m:else>
+        Else
+    </m:else>
+</div>
+
+
+
+<h2>If elseif else (expecting: elseifThird)</h2>
+<div>
+    <m:if test="${[].length}">
+        If
+    </m:if>
+    <m:elseif test="${[1,2,3].length == 1}">
+        ElseIf
+    </m:elseif>
+    <m:elseif test="${[1,2,3].length == 2}">
+        <h4>elseifSecond</h4>
+    </m:elseif>
+    <m:elseif test="${![].length}">
+        <h4>elseifThird</h4>
+    </m:elseif>
+    <m:else>
+        Else
+    </m:else>
+</div>
+
+
+
+<h2>If elseif else (expecting: else)</h2>
+<div>
+    <m:if test="${[].length}">
+        If
+    </m:if>
+    <m:elseif test="${[1,2,3].length == 1}">
+        ElseIf
+    </m:elseif>
+    <m:elseif test="${[1,2,3].length == 2}">
+        <h4>elseifSecond</h4>
+    </m:elseif>
+    <m:elseif test="${[].length}">
+        <h4>elseifThird</h4>
+    </m:elseif>
+    <m:else>
+        <h4>else</h4>
+    </m:else>
+</div>
+
+
+
+
+
+<h2>Deep nesting if else</h2>
+<m:if test="${true}">
+    <m:if test="${true}">
+        <m:if test="${true}">
+            <m:if test="${true}">
+                <m:if test="${true}">
+                    <m:if test="${true}">
+                        <m:if test="${true}">
+                            <m:if test="${true}">
+
+                                <m:if test="${false}">
+                                    <m:if test="${true}">
+                                        <h4>1: if</h4>
+                                    </m:if>
+                                </m:if>
+                                <m:else>
+                                    <m:if test="${true}">
+                                        <m:if test="${true}">
+                                            <m:if test="${true}">
+
+                                                <m:if test="${false}">
+                                                    <m:if test="${true}">
+                                                        <h4>2: if</h4>
+                                                    </m:if>
+                                                </m:if>
+                                                <m:elseif test="${true}">
+                                                    <m:if test="${false}">
+                                                        <h4>3: if</h4>
+                                                    </m:if>
+                                                    <m:elseif test="${false == true}">
+                                                        <h4>4: elseif</h4>
+                                                    </m:elseif>
+                                                    <m:elseif test="${0}">
+                                                        <h4>elseif</h4>
+                                                    </m:elseif>
+                                                    <m:else>
+                                                        <ul>
+                                                            <li>
+                                                                <h4>6: else ( expected )</h4>
+                                                                <m:get key="eachNestedMap"/>
+                                                            </li>
+                                                        </ul>
+                                                    </m:else>
+                                                </m:elseif>
+
+                                            </m:if>
+                                        </m:if>
+                                    </m:if>
+                                </m:else>
+
+                            </m:if>
+                        </m:if>
+                    </m:if>
+                </m:if>
+            </m:if>
+        </m:if>
+    </m:if>
+</m:if>
+
+
+
+
+<h2>Body from test0.html in the end</h2>
+<m:body name="myFirstBody" model="${{caller:'test2.html'}}"/>
+
+<h1>test2.html END</h1>
+

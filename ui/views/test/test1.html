@@ -1,0 +1,37 @@
+<h1>test1.html START</h1>
+
+<h2>Output model property using <m:esc>${myModelProperty}</m:esc></h2>
+<h4>__${myModelProperty}__</h4>
+
+<h2>Output model variable using <m:esc>${variable}</m:esc></h2>
+<h4>__${variable}__</h4>
+
+<h2>Output global property using <m:esc>${M.request.myGlobalProperty}</m:esc></h2>
+<h4>__${M.request.myGlobalProperty}__</h4>
+
+<h2>Output global property using <m:esc><%= M.request.myGlobalProperty %></m:esc></h2>
+<h4>__<%= M.request.myGlobalProperty %>__</h4>
+
+<h2>Output local property using <m:esc>${M.local.myLocalProperty}</m:esc></h2>
+<h4>__${M.local.myLocalProperty} ( Expecting nothing since it was set in parent template )__</h4>
+
+<h2>Output the body with key myFirstBody</h2>
+<m:body name="myFirstBody" model="${{modelPassedToBody1: 'This is a variable passed to the body invokation'}}" />
+
+<h2>Between bodies. Output same properties as in myFirstBody</h2>
+<h4>__${myModelProperty}__</h4>
+<h4>__${variable}__</h4>
+<h4>__${M.request.myGlobalProperty}__</h4>
+<h4>__${modelPassedToBody1} ( Expecting nothing here since this one was only passed to myFirstBody invokation )__</h4>
+<h4>__${renderModelProperty1}__</h4>
+
+<h2>Output the body with key mySecondBody</h2>
+<m:body name="mySecondBody"/>
+
+
+<m:render file="test/test2.html" model="${{renderModelProperty2: 'renderModelPropertyValue2'}}"/>
+
+<h2>Output the body with key mySecondBody after render of test2.html is done</h2>
+<m:body name="mySecondBody" />
+
+<h1>test1.html END</h1>

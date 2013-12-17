@@ -1,1 +1,0 @@
-MoCP requires either and AMD compatible dependendency manager such as MoQR.js or requireJS.js

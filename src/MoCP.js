@@ -1,44 +1,21 @@
 /**
- * @Visit http://www.mo-js.com for more documentation and more information
+ * Copyright (C) 2013 momomo.com <opensource@momomo.com>
  *
- * @MoCP
- * @Version 2.23
+ * Licensed under the GNU LESSER GENERAL PUBLIC LICENSE, Version 3, 29 June 2007;
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.gnu.org/licenses/lgpl-3.0.txt
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  * @Author Mohamed Seifeddine
- * @Author Add your name here
- *
- * License:
- *
- *
- * Rules:
- *
- * for ( var in array ) not allowed other than for object literals! Please use for ( var i = 0; ... ; i++ )
- *
- *
- * TODO Throw relevant exceptions when there is an error in the view, needs to conform strictly
- * TODO Expressions <% %> and <%= %>
- * TODO Evaluate dollar expressions such as method calls() and global scope calls and properties ( Window )
- * TODO Consider a compile strategy if possible. Taglibs method should not really be invoked until template is actually rendered, should be possible to resuse
- * TODO Comments
- * TODO Model passed as a model as well as its properties. To body as well
- * TODO dollar.getVal() on tag dollars attributes
- * TODO Cache the taglibinstance and make singletons like MoVC
- * TODO Break dependency on jQuery
- * TODO Refactor methods into corresponding classes
- * TODO Break dependency on require ( Too big for what we are actually using )
- * TODO Include out method to view for <% %> blocks
- * TODO Preload taglibs feature
- * TODO Allow for the passing of model to tags such as if else out
- * TODO Body should possibly be a class of its own... if invoked in taglib return itself, and when output in a dollar should
- * TODO jquery attributes can not handle "" use my old regex
- * TODO Synchronous loading of files and invokations as an option
- * TODO Escape code ... do not proccess anything within a block, just output
- * TODO TAGS: createlink, message, rand, script, css, less, cache, import and cache taglibraries and templates, oi, si, message ( recursive )
- * TODO CSS, LESS views folder .. figure out
- * TODO Think about model strategy real hard
- *
- * TOOD Switch var i = 0; while ... for ( var i = 0; ... ; i++ )
- * **/
+ * @Author Philip Nilsson
+ */
 (function () {
         window.define ? define([], callback) : callback();
 
